@@ -1,0 +1,10 @@
+/* Unified scrollbar styling */
+/* Firefox */
+* { scrollbar-width: thin; scrollbar-color: hsl(var(--accent)) hsl(var(--background)); }
+/* WebKit */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: hsl(var(--background)); }
+::-webkit-scrollbar-thumb { background: hsl(var(--accent)); border-radius: 9999px; border: 2px solid hsl(var(--background)); }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--accent) / 0.85); }
+
+html, body { overflow-x: hidden; }
