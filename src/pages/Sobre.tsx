@@ -37,42 +37,55 @@ const Sobre = () => {
           Meu Arsenal de Alta Alavancagem
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="bg-white/5 backdrop-blur-md border-white/10 shadow-lg">
-            <CardHeader>
-              <CardTitle className="font-heading text-foreground">Lovable.dev</CardTitle>
-            </CardHeader>
-            <CardContent className="text-foreground/80 font-open">
-              Para criar interfaces e aplicações completas a partir de linguagem natural, garantindo velocidade máxima do protótipo à produção.
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="relative group pt-10" style={{ perspective: "800px" }}>
+            <div className="absolute -top-6 left-1/2 -translate-x-1/2 transform-gpu [transform:rotateX(14deg)_translateZ(10px)] group-hover:[transform:rotateX(0deg)_translateZ(0)] transition-transform duration-500">
+              <div className="h-12 w-12 rounded-xl bg-white/10 border border-white/20 backdrop-blur flex items-center justify-center shadow-2xl ring-1 ring-white/20 overflow-hidden">
+                <img src="https://lovable.dev/favicon.ico" alt="Logo Lovable.dev" className="h-8 w-8 object-contain drop-shadow-[0_6px_10px_rgba(0,0,0,0.45)]" />
+              </div>
+            </div>
+            <Card className="bg-white/5 backdrop-blur-md border-white/10 shadow-lg">
+              <CardHeader>
+                <CardTitle className="font-heading text-foreground">Lovable.dev</CardTitle>
+              </CardHeader>
+              <CardContent className="text-foreground/80 font-open">
+                Para criar interfaces e aplicações completas a partir de linguagem natural, garantindo velocidade máxima do protótipo à produção.
+              </CardContent>
+            </Card>
+          </div>
 
-          <Card className="bg-white/5 backdrop-blur-md border-white/10 shadow-lg">
-            <CardHeader>
-              <CardTitle className="font-heading text-foreground">Supabase</CardTitle>
-            </CardHeader>
-            <CardContent className="text-foreground/80 font-open">
-              Para estruturar bancos de dados robustos, autenticação e backends escaláveis sem a dor de cabeça da infraestrutura tradicional.
-            </CardContent>
-          </Card>
+          <div className="relative group pt-10" style={{ perspective: "800px" }}>
+            <div className="absolute -top-6 left-1/2 -translate-x-1/2 transform-gpu [transform:rotateX(14deg)_translateZ(10px)] group-hover:[transform:rotateX(0deg)_translateZ(0)] transition-transform duration-500">
+              <div className="h-12 w-12 rounded-xl bg-white/10 border border-white/20 backdrop-blur flex items-center justify-center shadow-2xl ring-1 ring-white/20 overflow-hidden">
+                <img src="https://github.com/supabase.png" alt="Logo Supabase" className="h-8 w-8 object-contain drop-shadow-[0_6px_10px_rgba(0,0,0,0.45)]" />
+              </div>
+            </div>
+            <Card className="bg-white/5 backdrop-blur-md border-white/10 shadow-lg">
+              <CardHeader>
+                <CardTitle className="font-heading text-foreground">Supabase</CardTitle>
+              </CardHeader>
+              <CardContent className="text-foreground/80 font-open">
+                Para estruturar bancos de dados robustos, autenticação e backends escaláveis sem a dor de cabeça da infraestrutura tradicional.
+              </CardContent>
+            </Card>
+          </div>
 
-          <Card className="bg-white/5 backdrop-blur-md border-white/10 shadow-lg">
-            <CardHeader>
-              <CardTitle className="font-heading text-foreground">Builder.io</CardTitle>
-            </CardHeader>
-            <CardContent className="text-foreground/80 font-open">
-              Para criar páginas e conteúdos visualmente, dando autonomia para o cliente final e desacoplando o conteúdo do código.
-            </CardContent>
-          </Card>
+          <div className="relative group pt-10" style={{ perspective: "800px" }}>
+            <div className="absolute -top-6 left-1/2 -translate-x-1/2 transform-gpu [transform:rotateX(14deg)_translateZ(10px)] group-hover:[transform:rotateX(0deg)_translateZ(0)] transition-transform duration-500">
+              <div className="h-12 w-12 rounded-xl bg-white/10 border border-white/20 backdrop-blur flex items-center justify-center shadow-2xl ring-1 ring-white/20 overflow-hidden">
+                <img src="https://github.com/BuilderIO.png" alt="Logo Builder.io" className="h-8 w-8 object-contain drop-shadow-[0_6px_10px_rgba(0,0,0,0.45)]" />
+              </div>
+            </div>
+            <Card className="bg-white/5 backdrop-blur-md border-white/10 shadow-lg">
+              <CardHeader>
+                <CardTitle className="font-heading text-foreground">Builder.io</CardTitle>
+              </CardHeader>
+              <CardContent className="text-foreground/80 font-open">
+                Para criar páginas e conteúdos visualmente, dando autonomia para o cliente final e desacoplando o conteúdo do código.
+              </CardContent>
+            </Card>
+          </div>
 
-          <Card className="bg-white/5 backdrop-blur-md border-white/10 shadow-lg">
-            <CardHeader>
-              <CardTitle className="font-heading text-foreground">Google Gemini</CardTitle>
-            </CardHeader>
-            <CardContent className="text-foreground/80 font-open">
-              Para integrar inteligência artificial avançada nas aplicações, automatizando tarefas e gerando insights.
-            </CardContent>
-          </Card>
         </div>
       </section>
 
