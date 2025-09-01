@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import DisplayCards from "@/components/ui/display-cards";
+import { Sparkles } from "lucide-react";
 
 const Sobre = () => {
   return (
