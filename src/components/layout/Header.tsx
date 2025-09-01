@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -24,23 +23,23 @@ const Header = () => {
   ];
 
   return (
-    <header 
+    <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled 
-          ? "mx-4 mt-4 rounded-2xl glass" 
-          : "bg-background/95 backdrop-blur-sm border-b border-white/10"
+        isScrolled
+          ? "mx-4 mt-4 rounded-2xl glass-card shadow-lg ring-1 ring-white/10"
+          : "bg-background/70 backdrop-blur-md border-b border-white/10"
       )}
     >
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <Link 
-            to="/" 
-            className="text-xl font-bold font-['Poppins'] text-foreground hover:text-primary transition-colors"
+          <Link
+            to="/"
+            className="text-xl font-bold font-heading text-foreground hover:text-primary transition-colors"
           >
             Portfolio
           </Link>
-          
+
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <Link
@@ -50,8 +49,8 @@ const Header = () => {
                   "relative font-medium transition-colors duration-200",
                   "after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all after:duration-300",
                   "hover:text-primary hover:after:w-full",
-                  location.pathname === item.path 
-                    ? "text-primary after:w-full" 
+                  location.pathname === item.path
+                    ? "text-primary after:w-full"
                     : "text-foreground/80"
                 )}
               >
