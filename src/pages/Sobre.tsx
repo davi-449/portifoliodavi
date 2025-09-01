@@ -101,7 +101,7 @@ const Sobre = () => {
               iconClassName: "bg-emerald-900",
               titleClassName: "text-emerald-400",
               className:
-                "w-[19rem] md:w-[22rem] [grid-area:stack] translate-x-0 translate-y-0 hover:-translate-y-6 before:absolute before:w-[100%] before:rounded-xl before:outline-1 before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[50%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
+                "[grid-area:stack] -translate-x-8 translate-y-0 hover:-translate-y-6",
             },
             {
               icon: <Wand2 className="size-4 text-pink-300" />,
@@ -112,7 +112,7 @@ const Sobre = () => {
               iconClassName: "bg-pink-900",
               titleClassName: "text-pink-400",
               className:
-                "w-[19rem] md:w-[22rem] [grid-area:stack] translate-x-10 translate-y-8 hover:-translate-y-2 before:absolute before:w-[100%] before:rounded-xl before:outline-1 before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[50%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
+                "[grid-area:stack] translate-x-2 translate-y-8 hover:-translate-y-2",
             },
             {
               icon: <Blocks className="size-4 text-violet-300" />,
@@ -123,7 +123,7 @@ const Sobre = () => {
               iconClassName: "bg-violet-900",
               titleClassName: "text-violet-400",
               className:
-                "w-[19rem] md:w-[22rem] [grid-area:stack] translate-x-20 translate-y-16 hover:translate-y-10",
+                "[grid-area:stack] translate-x-12 translate-y-16 hover:translate-y-10",
             },
           ];
 
