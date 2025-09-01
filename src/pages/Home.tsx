@@ -8,10 +8,10 @@ const Home = () => {
         <LavaLamp />
       </div>
       <div className="max-w-5xl mx-auto text-center relative z-10">
-        <h1 className="text-5xl md:text-7xl font-heading font-bold tracking-tight text-foreground mb-6">
+        <h1 className="text-5xl md:text-7xl font-heading font-bold tracking-tight text-white mix-blend-difference mb-6">
           David Silveira
         </h1>
-        <p className="text-xl md:text-2xl text-foreground/80 leading-relaxed mb-10 font-open">
+        <p className="text-xl md:text-2xl text-white mix-blend-difference leading-relaxed mb-10 font-open">
           Desenvolvedor Full-Stack & Especialista em Soluções Web
         </p>
         <div className="flex justify-center">
