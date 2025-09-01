@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 function FloatingPaths({ position }: { position: number }) {
   const paths = Array.from({ length: 36 }, (_, i) => ({
@@ -68,12 +69,11 @@ export function BackgroundPaths({ title = "Background Paths" }: { title?: string
           </h1>
 
           <div className="inline-block group relative bg-gradient-to-b from-white/10 to-black/10 dark:from-black/10 dark:to-white/10 p-px rounded-2xl backdrop-blur-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <Button
-              variant="ghost"
-              className="rounded-[1.15rem] px-8 py-6 text-lg font-semibold backdrop-blur-md bg-black/95 hover:bg-black/100 dark:bg-white/95 dark:hover:bg-white/100 text-white dark:text-black transition-all duration-300 group-hover:-translate-y-0.5 border border-white/10 dark:border-black/10 hover:shadow-md"
-            >
-              <span className="opacity-90 group-hover:opacity-100 transition-opacity">Discover Excellence</span>
-              <span className="ml-3 opacity-70 group-hover:opacity-100 group-hover:translate-x-1.5 transition-all duration-300">→</span>
+            <Button asChild variant="ghost" className="rounded-[1.15rem] px-8 py-6 text-lg font-semibold backdrop-blur-md bg-black/95 hover:bg-black/100 dark:bg-white/95 dark:hover:bg-white/100 text-white dark:text-black transition-all duration-300 group-hover:-translate-y-0.5 border border-white/10 dark:border-black/10 hover:shadow-md">
+              <Link to="/projetos">
+                <span className="opacity-90 group-hover:opacity-100 transition-opacity">Ver meus Projetos</span>
+                <span className="ml-3 opacity-70 group-hover:opacity-100 group-hover:translate-x-1.5 transition-all duration-300">→</span>
+              </Link>
             </Button>
           </div>
         </motion.div>
