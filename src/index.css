@@ -10,7 +10,7 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* Brutalismo Etéreo - Dark Mode Palette */
-    --background: 0 0% 10.2%; /* #1A1A1A */
+    --background: 0 0% 3.9%; /* #0A0A0A to match neutral-950 */
     --foreground: 0 0% 94.9%; /* #F2F2F2 */
 
     --card: 0 0% 12%;
