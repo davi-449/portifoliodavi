@@ -52,7 +52,7 @@ float sdf(vec3 p) {
     vec3 p2 = rotate(p, vec3(1.), -time/5.0);
     vec3 p3 = rotate(p, vec3(1., 1., 0.), -time/4.5);
     vec3 p4 = rotate(p, vec3(0., 1., 0.), -time/4.0);
-    
+
     float final = sphereSDF(p1 - vec3(-0.5, 0.0, 0.0), 0.35);
     float nextSphere = sphereSDF(p2 - vec3(0.55, 0.0, 0.0), 0.3);
     final = smin(final, nextSphere, 0.1);
@@ -62,7 +62,7 @@ float sdf(vec3 p) {
     final = smin(final, nextSphere, 0.1);
     nextSphere = sphereSDF(p4 - vec3(0.45, -0.45, 0.0), 0.15);
     final = smin(final, nextSphere, 0.1);
-    
+
     return final;
 }
 
@@ -91,17 +91,19 @@ void main() {
     vec2 newUV = (vUv - vec2(0.5)) * resolution.zw + vec2(0.5);
     vec3 cameraPos = vec3(0.0, 0.0, 5.0);
     vec3 ray = normalize(vec3((vUv - vec2(0.5)) * resolution.zw, -1));
-    vec3 color = vec3(1.0);
-    
+
     float t = rayMarch(cameraPos, ray);
     if (t > 0.0) {
         vec3 p = cameraPos + ray * t;
         vec3 normal = getNormal(p);
-        float fresnel = pow(1.0 + dot(ray, normal), 3.0);
-        color = vec3(fresnel);
+        // Simple lighting for white blobs: directional light from camera (0,0,1) and rim highlight
+        float diff = clamp(dot(normal, vec3(0.0, 0.0, 1.0)), 0.0, 1.0);
+        float rim = pow(1.0 - diff, 2.0);
+        vec3 color = vec3(0.85 * diff + 0.15 + 0.15 * rim);
         gl_FragColor = vec4(color, 1.0);
     } else {
-        gl_FragColor = vec4(1.0);
+        // Black background
+        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     }
 }
 `;
