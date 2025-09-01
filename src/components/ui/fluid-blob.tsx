@@ -1,3 +1,4 @@
+
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -143,9 +144,11 @@ function LavaLampShader() {
     <mesh ref={meshRef}>
       <planeGeometry args={[5, 5]} />
       <shaderMaterial
-        uniforms={uniforms}
-        vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
+        {...({
+          uniforms,
+          vertexShader,
+          fragmentShader,
+        } as any)}
       />
     </mesh>
   );
