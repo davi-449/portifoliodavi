@@ -27,8 +27,8 @@ const Header = () => {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled
-          ? "mx-4 mt-4 rounded-2xl glass-card shadow-lg ring-1 ring-white/10"
-          : "bg-background/70 backdrop-blur-md border-b border-white/10"
+          ? "mx-4 mt-4 rounded-2xl bg-neutral-950/60 backdrop-blur-lg shadow-lg ring-1 ring-white/10"
+          : "bg-neutral-950/80 backdrop-blur-lg border-b border-white/10"
       )}
     >
       <nav className="container mx-auto px-6 py-4">
