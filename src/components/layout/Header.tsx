@@ -25,7 +25,7 @@ const Header = () => {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 mx-4 mt-4 rounded-2xl bg-neutral-950/60 backdrop-blur-lg shadow-lg ring-1 ring-white/10 border border-white/10"
+        "fixed top-4 left-4 right-4 z-50 transition-all duration-300 rounded-2xl bg-neutral-950/60 backdrop-blur-lg shadow-lg ring-1 ring-white/10 border border-white/10"
       )}
     >
       <nav className="container mx-auto px-6 py-4">
