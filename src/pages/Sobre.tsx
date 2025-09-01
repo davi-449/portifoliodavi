@@ -39,7 +39,7 @@ const Sobre = () => {
           Meu Arsenal de Alta Alavancagem
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
           <div className="relative group pt-10" style={{ perspective: "800px" }}>
             <div className="absolute -top-6 left-1/2 -translate-x-1/2 transform-gpu [transform:rotateX(14deg)_translateZ(10px)] group-hover:[transform:rotateX(0deg)_translateZ(0)] transition-transform duration-500">
               <div className="h-12 w-12 rounded-xl bg-white/10 border border-white/20 backdrop-blur flex items-center justify-center shadow-2xl ring-1 ring-white/20 overflow-hidden">
