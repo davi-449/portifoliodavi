@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 function FloatingPaths({ position }: { position: number }) {
   const paths = Array.from({ length: 36 }, (_, i) => ({
@@ -33,11 +34,14 @@ function FloatingPaths({ position }: { position: number }) {
   );
 }
 
-export function BackgroundPaths({ title = "Background Paths" }: { title?: string }) {
+export function BackgroundPaths({ title = "Background Paths", compactTop = false }: { title?: string; compactTop?: boolean }) {
   const words = title.split(" ");
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-neutral-950 dark:bg-white">
+    <div className={cn(
+      "relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-neutral-950 dark:bg-white",
+      compactTop && "-mt-20 md:-mt-24"
+    )}>
       <div className="absolute inset-0">
         <FloatingPaths position={1} />
         <FloatingPaths position={-1} />
