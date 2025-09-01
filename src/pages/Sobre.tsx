@@ -93,34 +93,37 @@ const Sobre = () => {
         {(() => {
           const defaultCards = [
             {
-              icon: <Sparkles className="size-4 text-blue-300" />,
-              title: "Featured",
-              description: "Discover amazing content",
-              date: "Just now",
-              iconClassName: "text-blue-500",
-              titleClassName: "text-blue-500",
+              icon: <img src="https://github.com/supabase.png" alt="Supabase" className="h-4 w-4 object-contain" />,
+              title: "Supabase",
+              description:
+                "Bancos de dados, autenticação e backends escaláveis sem dor de infraestrutura.",
+              date: "Hoje",
+              iconClassName: "bg-emerald-900",
+              titleClassName: "text-emerald-400",
               className:
-                "[grid-area:stack] hover:-translate-y-10 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
+                "[grid-area:stack] hover:-translate-y-8 before:absolute before:w-[100%] before:rounded-xl before:outline-1 before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[60%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
             },
             {
-              icon: <Sparkles className="size-4 text-blue-300" />,
-              title: "Popular",
-              description: "Trending this week",
-              date: "2 days ago",
-              iconClassName: "text-blue-500",
-              titleClassName: "text-blue-500",
+              icon: <img src="https://lovable.dev/android-chrome-192x192.png" alt="Lovable.dev" className="h-4 w-4 object-contain" />,
+              title: "Lovable.dev",
+              description:
+                "Interfaces e apps completos a partir de linguagem natural, do protótipo à produção.",
+              date: "Esta semana",
+              iconClassName: "bg-pink-900",
+              titleClassName: "text-pink-400",
               className:
-                "[grid-area:stack] translate-x-12 translate-y-10 hover:-translate-y-1 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
+                "[grid-area:stack] translate-x-24 translate-y-14 hover:-translate-y-2 before:absolute before:w-[100%] before:rounded-xl before:outline-1 before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[60%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
             },
             {
-              icon: <Sparkles className="size-4 text-blue-300" />,
-              title: "New",
-              description: "Latest updates and features",
-              date: "Today",
-              iconClassName: "text-blue-500",
-              titleClassName: "text-blue-500",
+              icon: <img src="https://github.com/BuilderIO.png" alt="Builder.io" className="h-4 w-4 object-contain" />,
+              title: "Builder.io",
+              description:
+                "Páginas e conteúdos visuais com autonomia para o cliente, desacoplando conteúdo do código.",
+              date: "Sempre",
+              iconClassName: "bg-violet-900",
+              titleClassName: "text-violet-400",
               className:
-                "[grid-area:stack] translate-x-24 translate-y-20 hover:translate-y-10",
+                "[grid-area:stack] translate-x-48 translate-y-28 hover:translate-y-16",
             },
           ];
 
