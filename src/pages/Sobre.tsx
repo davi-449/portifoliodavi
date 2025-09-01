@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import DisplayCards from "@/components/ui/display-cards";
-import { Sparkles } from "lucide-react";
+import { Database, Wand2, Blocks } from "lucide-react";
 
 const Sobre = () => {
   return (
@@ -34,7 +34,7 @@ const Sobre = () => {
       </section>
 
       {/* Seção 2: Arsenal de Soluções */}
-      <section className="space-y-10">
+      <section className="space-y-10 overflow-x-hidden">
         <h2 className="text-center text-3xl md:text-4xl font-heading font-semibold text-foreground">
           Meu Arsenal de Alta Alavancagem
         </h2>
@@ -93,7 +93,7 @@ const Sobre = () => {
         {(() => {
           const defaultCards = [
             {
-              icon: <img src="https://github.com/supabase.png" alt="Supabase" className="h-4 w-4 object-contain" />,
+              icon: <Database className="size-4 text-emerald-300" />,
               title: "Supabase",
               description:
                 "Bancos de dados, autenticação e backends escaláveis sem dor de infraestrutura.",
@@ -101,10 +101,10 @@ const Sobre = () => {
               iconClassName: "bg-emerald-900",
               titleClassName: "text-emerald-400",
               className:
-                "[grid-area:stack] hover:-translate-y-8 before:absolute before:w-[100%] before:rounded-xl before:outline-1 before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[60%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
+                "w-[19rem] md:w-[22rem] [grid-area:stack] translate-x-0 translate-y-0 hover:-translate-y-6 before:absolute before:w-[100%] before:rounded-xl before:outline-1 before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[50%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
             },
             {
-              icon: <img src="https://lovable.dev/android-chrome-192x192.png" alt="Lovable.dev" className="h-4 w-4 object-contain" />,
+              icon: <Wand2 className="size-4 text-pink-300" />,
               title: "Lovable.dev",
               description:
                 "Interfaces e apps completos a partir de linguagem natural, do protótipo à produção.",
@@ -112,10 +112,10 @@ const Sobre = () => {
               iconClassName: "bg-pink-900",
               titleClassName: "text-pink-400",
               className:
-                "[grid-area:stack] translate-x-24 translate-y-14 hover:-translate-y-2 before:absolute before:w-[100%] before:rounded-xl before:outline-1 before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[60%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
+                "w-[19rem] md:w-[22rem] [grid-area:stack] translate-x-10 translate-y-8 hover:-translate-y-2 before:absolute before:w-[100%] before:rounded-xl before:outline-1 before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[50%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
             },
             {
-              icon: <img src="https://github.com/BuilderIO.png" alt="Builder.io" className="h-4 w-4 object-contain" />,
+              icon: <Blocks className="size-4 text-violet-300" />,
               title: "Builder.io",
               description:
                 "Páginas e conteúdos visuais com autonomia para o cliente, desacoplando conteúdo do código.",
@@ -123,13 +123,13 @@ const Sobre = () => {
               iconClassName: "bg-violet-900",
               titleClassName: "text-violet-400",
               className:
-                "[grid-area:stack] translate-x-48 translate-y-28 hover:translate-y-16",
+                "w-[19rem] md:w-[22rem] [grid-area:stack] translate-x-20 translate-y-16 hover:translate-y-10",
             },
           ];
 
           return (
-            <div className="flex min-h-[400px] w-full items-center justify-center py-10">
-              <div className="w-full max-w-3xl">
+            <div className="flex min-h-[420px] w-full items-center justify-center py-10 overflow-x-hidden">
+              <div className="w-full max-w-4xl mx-auto">
                 <DisplayCards cards={defaultCards} />
               </div>
             </div>
