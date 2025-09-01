@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, {
@@ -7,7 +8,7 @@ import React, {
   useState,
   type SVGProps,
 } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, easeOut, easeIn } from "framer-motion";
 
 interface Logo {
   name: string;
@@ -64,7 +65,7 @@ const LogoColumn: React.FC<LogoColumnProps> = React.memo(
         transition={{
           delay: index * 0.1,
           duration: 0.5,
-          ease: "easeOut",
+          ease: easeOut,
         }}
       >
         <AnimatePresence mode="wait">
@@ -91,7 +92,7 @@ const LogoColumn: React.FC<LogoColumnProps> = React.memo(
               filter: "blur(6px)",
               transition: {
                 type: "tween",
-                ease: "easeIn",
+                ease: easeIn,
                 duration: 0.3,
               },
             }}

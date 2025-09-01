@@ -1,7 +1,9 @@
 
-import { motion } from "framer-motion";
+import { motion, type Variants, easeOut, easeInOut, cubicBezier } from "framer-motion";
 import { Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const easeSmooth = cubicBezier(0.23, 0.86, 0.39, 0.96);
 
 function ElegantShape({
   className,
@@ -25,14 +27,14 @@ function ElegantShape({
       transition={{
         duration: 2.4,
         delay,
-        ease: [0.23, 0.86, 0.39, 0.96],
+        ease: easeSmooth,
         opacity: { duration: 1.2 },
       }}
       className={cn("absolute", className)}
     >
       <motion.div
         animate={{ y: [0, 15, 0] }}
-        transition={{ duration: 12, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        transition={{ duration: 12, repeat: Number.POSITIVE_INFINITY, ease: easeInOut }}
         style={{ width, height }}
         className="relative"
       >
@@ -61,14 +63,14 @@ function HeroGeometric({
   title1?: string;
   title2?: string;
 }) {
-  const fadeUpVariants = {
+  const fadeUpVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: { 
         duration: 1, 
-        ease: "easeOut" 
+        ease: easeOut
       }
     },
   };
