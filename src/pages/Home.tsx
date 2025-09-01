@@ -8,12 +8,22 @@ const Home = () => {
         <LavaLamp />
       </div>
       <div className="max-w-5xl mx-auto text-center relative z-10">
-        <h1 className="text-5xl md:text-7xl font-heading font-bold tracking-tight text-white mix-blend-difference mb-6">
-          David Silveira
-        </h1>
-        <p className="text-xl md:text-2xl text-white mix-blend-difference leading-relaxed mb-10 font-open">
-          Desenvolvedor Full-Stack & Especialista em Soluções Web
-        </p>
+        <div className="relative inline-block">
+          <h1 className="text-5xl md:text-7xl font-heading font-bold tracking-tight text-black mb-6">
+            David Silveira
+          </h1>
+          <h1 className="pointer-events-none select-none absolute inset-0 text-5xl md:text-7xl font-heading font-bold tracking-tight text-white mix-blend-difference mb-6">
+            David Silveira
+          </h1>
+        </div>
+        <div className="relative inline-block">
+          <p className="text-xl md:text-2xl text-black leading-relaxed mb-10 font-open">
+            Desenvolvedor Full-Stack & Especialista em Soluções Web
+          </p>
+          <p className="pointer-events-none select-none absolute inset-0 text-xl md:text-2xl text-white mix-blend-difference leading-relaxed mb-10 font-open">
+            Desenvolvedor Full-Stack & Especialista em Soluções Web
+          </p>
+        </div>
         <div className="flex justify-center">
           <Link
             to="/projetos"
