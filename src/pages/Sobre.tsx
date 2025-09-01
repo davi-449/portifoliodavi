@@ -101,7 +101,7 @@ const Sobre = () => {
               iconClassName: "bg-emerald-900",
               titleClassName: "text-emerald-400",
               className:
-                "[grid-area:stack] -translate-x-8 translate-y-0 hover:-translate-y-6",
+                "[grid-area:stack] -translate-x-8 translate-y-0 hover:-translate-y-6 z-10",
             },
             {
               icon: <Wand2 className="size-4 text-pink-300" />,
@@ -112,7 +112,7 @@ const Sobre = () => {
               iconClassName: "bg-pink-900",
               titleClassName: "text-pink-400",
               className:
-                "[grid-area:stack] translate-x-2 translate-y-8 hover:-translate-y-2",
+                "[grid-area:stack] translate-x-2 translate-y-8 hover:-translate-y-2 z-20",
             },
             {
               icon: <Blocks className="size-4 text-violet-300" />,
@@ -123,7 +123,7 @@ const Sobre = () => {
               iconClassName: "bg-violet-900",
               titleClassName: "text-violet-400",
               className:
-                "[grid-area:stack] translate-x-12 translate-y-16 hover:translate-y-10",
+                "[grid-area:stack] translate-x-12 translate-y-16 hover:translate-y-10 z-30",
             },
           ];
 
