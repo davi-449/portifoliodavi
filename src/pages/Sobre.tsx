@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import DisplayCards from "@/components/ui/display-cards";
-import { Database, Wand2, Blocks } from "lucide-react";
+import { LogoCarousel } from "@/components/ui/logo-carousel";
+import { GradientHeading } from "@/components/ui/gradient-heading";
+import { LovableIcon, SupabaseIcon, BuilderIcon, ReactIcon, TailwindIcon, TypeScriptIcon } from "@/components/icons/logos";
 
 const Sobre = () => {
   return (
