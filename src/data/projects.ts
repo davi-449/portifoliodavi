@@ -1,4 +1,3 @@
-
 export interface Project {
   title: string;
   description: string;
@@ -9,24 +8,27 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    title: 'Sistema de E-commerce Fictício',
-    description: 'Plataforma completa de vendas online com carrinho, checkout e painel de admin.',
-    imageUrl: '/placeholder.svg',
-    projectUrl: '#',
-    technologies: ['Next.js', 'TypeScript', 'Supabase', 'Stripe']
+    title: 'SGC - Gestor para Corretoras',
+    description:
+      'Plataforma SaaS completa para corretores de seguros, focada na automação de renovações, gestão de apólices e controle de clientes para maximizar a eficiência e receita.',
+    imageUrl: '/images/sgc-gestorpulse.png',
+    projectUrl: 'https://sgc.gestorpulse.com.br',
+    technologies: ['Next.js', 'TypeScript', 'Supabase', 'Tailwind CSS', 'Stripe'],
   },
   {
-    title: 'Dashboard de Análise de Dados',
-    description: 'Interface interativa para visualização de métricas de negócio em tempo real.',
-    imageUrl: '/placeholder.svg',
-    projectUrl: '#',
-    technologies: ['React', 'D3.js', 'Tailwind CSS', 'PostgreSQL']
+    title: 'GPS - Gestão de Planos de Saúde',
+    description:
+      'Sistema B2B para departamentos de RH, projetado para centralizar e otimizar a gestão de planos de saúde corporativos, com dashboards analíticos e controle total de funcionários.',
+    imageUrl: '/images/rh-gestorpulse.png',
+    projectUrl: 'https://rh.gestorpulse.com.br',
+    technologies: ['React', 'TypeScript', 'Supabase', 'Tailwind CSS', 'Chart.js'],
   },
   {
-    title: 'App de Gestão de Tarefas',
-    description: 'Aplicação colaborativa para gerenciamento de projetos e produtividade em equipe.',
-    imageUrl: '/placeholder.svg',
-    projectUrl: '#',
-    technologies: ['Vue.js', 'Node.js', 'MongoDB', 'Socket.io']
-  }
+    title: 'Medikran - Fisioterapia Pediátrica',
+    description:
+      'Aplicação web de nicho para fisioterapeutas pediátricos, permitindo a medição precisa de assimetrias cranianas e a geração de relatórios técnicos com validação científica.',
+    imageUrl: '/images/medikran.png',
+    projectUrl: 'https://medikran.com.br',
+    technologies: ['Vue.js', 'TypeScript', 'Supabase', 'Tailwind CSS', 'PDFLib'],
+  },
 ];
