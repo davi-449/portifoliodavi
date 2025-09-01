@@ -42,7 +42,7 @@ export function BackgroundPaths({ title = "Background Paths", compactTop = false
       "relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-neutral-950 dark:bg-white",
       compactTop && "-mt-20 md:-mt-24"
     )}>
-      <div className="absolute inset-0">
+      <div className="fixed inset-0 -z-10 pointer-events-none">
         <FloatingPaths position={1} />
         <FloatingPaths position={-1} />
       </div>
