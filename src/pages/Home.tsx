@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom'
+import { LavaLamp } from '@/components/ui/fluid-blob'
 
 const Home = () => {
   return (
-    <section className="container mx-auto px-6 pt-28 pb-20 min-h-[80vh] flex items-center">
-      <div className="max-w-5xl mx-auto text-center">
+    <section className="relative container mx-auto px-6 pt-28 pb-20 min-h-[80vh] flex items-center overflow-hidden">
+      <div className="absolute inset-0 -z-10">
+        <LavaLamp />
+      </div>
+      <div className="max-w-5xl mx-auto text-center relative z-10">
         <h1 className="text-5xl md:text-7xl font-heading font-bold tracking-tight text-foreground mb-6">
-          Daniel Santos
+          David Silveira
         </h1>
         <p className="text-xl md:text-2xl text-foreground/80 leading-relaxed mb-10 font-open">
           Desenvolvedor Full-Stack & Especialista em Soluções Web
