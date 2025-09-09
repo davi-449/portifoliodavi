@@ -32,18 +32,8 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <Link
             to="/"
-            className="flex items-center gap-2 text-xl font-bold font-heading text-foreground hover:text-primary transition-colors"
+            className="text-xl font-bold font-heading text-foreground hover:text-primary transition-colors"
           >
-            <img 
-              src="/favicon-light.png?v=2" 
-              alt="Davi Code" 
-              className="w-6 h-6 rounded-md dark:hidden"
-            />
-            <img 
-              src="/favicon-dark.png?v=2" 
-              alt="Davi Code" 
-              className="w-6 h-6 rounded-md hidden dark:block"
-            />
             Davi Code
           </Link>
 
