@@ -2,9 +2,9 @@
 /* Firefox */
 * { scrollbar-width: thin; scrollbar-color: #F2F2F2 #1A1A1A; }
 /* WebKit */
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: hsl(var(--background)); }
-::-webkit-scrollbar-thumb { background: hsl(var(--accent)); border-radius: 9999px; border: 2px solid hsl(var(--background)); }
-::-webkit-scrollbar-thumb:hover { background: hsl(var(--accent) / 0.85); }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #1A1A1A; }
+::-webkit-scrollbar-thumb { background: #F2F2F2; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #cccccc; }
 
 html, body { overflow-x: hidden; }
