@@ -65,51 +65,6 @@ const Header = () => {
         </div>
       </nav>
 
-      {/* Mobile overlay & cascading menu */}
-      {menuOpen && (
-        <div className="fixed inset-0 z-[9999] md:hidden">
-          {/* backdrop */}
-          <button
-            aria-hidden
-            onClick={() => setMenuOpen(false)}
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity z-[9999]"
-          />
-
-          <div className="relative flex justify-end h-full">
-            <div className={cn(
-              'w-full max-w-xs h-full bg-card/95 backdrop-saturate-150 shadow-2xl border-l border-white/10 p-6 z-[10000]',
-              mounted ? 'translate-x-0' : 'translate-x-2'
-            )}>
-              <nav className="mt-10">
-                <ul className="flex flex-col gap-4">
-                  {navItems.map((item, i) => {
-                    const delay = `${i * 80}ms`;
-                    return (
-                      <li
-                        key={item.path}
-                        style={{ transitionDelay: delay }}
-                        className={cn(
-                          'transform transition-all duration-300 ease-out',
-                          mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                        )}
-                      >
-                        <Link
-                          to={item.path}
-                          onClick={() => setMenuOpen(false)}
-                          className="block text-lg font-medium text-foreground hover:text-primary"
-                        >
-                          {item.name}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-
-              </nav>
-            </div>
-          </div>
-        </div>
-      )}
     </header>
   );
 };
