@@ -15,11 +15,6 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // close menu on route change
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [location.pathname]);
-
   const navItems = [
     { name: 'Home', path: '/' },
     { name: 'Projetos', path: '/projetos' },
