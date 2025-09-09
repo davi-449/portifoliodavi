@@ -1,6 +1,6 @@
 /* Unified scrollbar styling */
 /* Firefox */
-* { scrollbar-width: thin; scrollbar-color: hsl(var(--accent)) hsl(var(--background)); }
+* { scrollbar-width: thin; scrollbar-color: #F2F2F2 #1A1A1A; }
 /* WebKit */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: hsl(var(--background)); }
