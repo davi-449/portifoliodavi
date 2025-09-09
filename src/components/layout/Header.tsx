@@ -101,17 +101,17 @@ const Header = () => {
 
       {/* Mobile overlay & cascading menu */}
       {menuOpen && (
-        <div className="fixed inset-0 z-40 md:hidden">
+        <div className="fixed inset-0 z-[9999] md:hidden">
           {/* backdrop */}
           <button
             aria-hidden
             onClick={() => setMenuOpen(false)}
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity z-40"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity z-[9999]"
           />
 
           <div className="relative flex justify-end h-full">
             <div className={cn(
-              'w-full max-w-xs h-full bg-card/95 backdrop-saturate-150 shadow-2xl border-l border-white/10 p-6 z-50',
+              'w-full max-w-xs h-full bg-card/95 backdrop-saturate-150 shadow-2xl border-l border-white/10 p-6 z-[10000]',
               mounted ? 'translate-x-0' : 'translate-x-2'
             )}>
               <nav className="mt-10">
@@ -139,13 +139,6 @@ const Header = () => {
                   })}
                 </ul>
 
-                <div className="mt-8 pt-4 border-t border-white/5">
-                  <p className="text-sm text-foreground/70">Siga nas redes</p>
-                  <div className="flex items-center gap-4 mt-3">
-                    <a href="#" className="w-9 h-9 rounded-md bg-foreground/5 flex items-center justify-center">A</a>
-                    <a href="#" className="w-9 h-9 rounded-md bg-foreground/5 flex items-center justify-center">B</a>
-                  </div>
-                </div>
               </nav>
             </div>
           </div>
