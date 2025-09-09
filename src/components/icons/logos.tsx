@@ -1,6 +1,5 @@
 import React, { type SVGProps } from "react";
 
-import React, { type SVGProps } from 'react';
 
 export function LovableIcon(props: SVGProps<SVGSVGElement>) {
   return (
