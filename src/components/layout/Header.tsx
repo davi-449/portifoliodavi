@@ -109,13 +109,11 @@ const Header = () => {
                     return (
                       <li
                         key={item.path}
+                        data-menu-item
                         style={{ transitionDelay: delay }}
                         className={cn(
                           'transform transition-all duration-350 ease-out',
                           'opacity-0 translate-y-4',
-                          // when menuOpen is true, we want to animate to visible state; since we render only when open,
-                          // we trigger animation by applying a short timeout to remove translate/opacity or we rely on CSS animation via keyframes.
-                          // We'll use inline style and a small effect for mounting animation.
                         )}
                       >
                         <Link
