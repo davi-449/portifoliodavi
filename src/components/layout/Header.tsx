@@ -37,7 +37,7 @@ const Header = () => {
             <span>Davi Code</span>
             {/* dark-mode icon next to the name, hidden in light mode */}
             <img
-              src="https://cdn.builder.io/api/v1/image/assets%2F82a4ef9d343047988bf80dc223a55e93%2F0e7492ffa202442abdd896b3d117cb21?format=webp&width=800"
+              src="/favicon-dark.png"
               alt="logo"
               className="hidden dark:inline-block w-7 h-7 rounded-md ml-2 object-cover border border-white/10"
             />
