@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, {
@@ -97,7 +96,7 @@ const LogoColumn: React.FC<LogoColumnProps> = React.memo(
               },
             }}
           >
-            <CurrentLogo className="h-20 w-20 max-h-[80%] max-w-[80%] object-contain md:h-32 md:w-32" />
+            <CurrentLogo className="max-h-[80%] max-w-[80%] h-auto w-auto md:max-h-[80%] md:max-w-[80%]" />
           </motion.div>
         </AnimatePresence>
       </motion.div>
