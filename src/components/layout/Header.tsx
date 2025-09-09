@@ -7,14 +7,6 @@ const Header = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (menuOpen) {
-      const t = setTimeout(() => setMounted(true), 20);
-      return () => clearTimeout(t);
-    }
-    setMounted(false);
-  }, [menuOpen]);
-
-  useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
