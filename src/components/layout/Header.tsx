@@ -34,7 +34,7 @@ const Header = () => {
             to="/"
             className="text-xl font-bold font-heading text-foreground hover:text-primary transition-colors"
           >
-            Portfolio
+            Davi Code
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">
