@@ -1,8 +1,13 @@
 import { MessageSquare, Mail } from "lucide-react";
+import { FloatingPaths } from '@/components/ui/background-paths';
 
 const Contato = () => {
   return (
     <div className="min-h-[70vh] flex items-center justify-center py-12 px-4">
+      <div className="fixed inset-0 -z-10 pointer-events-none">
+        <FloatingPaths position={1} />
+        <FloatingPaths position={-1} />
+      </div>
       <div className="max-w-2xl w-full mx-auto text-center rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-10 md:p-14 shadow-2xl">
         <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-4">Entre em Contato</h2>
         <p className="text-base md:text-lg font-open text-foreground/80 mb-8">
