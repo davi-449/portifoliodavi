@@ -62,6 +62,12 @@ const Header = () => {
             ))}
           </div>
 
+          <div className="md:hidden">
+            <Link to="/contato" className="inline-flex items-center justify-center gap-3 px-4 py-2 rounded-lg text-base font-semibold bg-primary text-white border border-transparent hover:opacity-90 transition">
+              Contato
+            </Link>
+          </div>
+
         </div>
       </nav>
 
