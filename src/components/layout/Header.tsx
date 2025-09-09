@@ -5,7 +5,16 @@ import { cn } from '@/lib/utils';
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    if (menuOpen) {
+      const t = setTimeout(() => setMounted(true), 20);
+      return () => clearTimeout(t);
+    }
+    setMounted(false);
+  }, [menuOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -93,34 +102,35 @@ const Header = () => {
       {/* Mobile overlay & cascading menu */}
       {menuOpen && (
         <div className="fixed inset-0 z-40 md:hidden">
-          {/* backdrop that blurs the page content but the menu will sit above it */}
+          {/* backdrop */}
           <button
             aria-hidden
             onClick={() => setMenuOpen(false)}
-            className="absolute inset-0 backdrop-blur-sm bg-black/30 transition-opacity"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity z-40"
           />
 
-          <div className="relative flex justify-end">
-            <div className="w-full max-w-xs h-full bg-card/95 backdrop-saturate-150 shadow-2xl border-l border-white/10 p-6">
+          <div className="relative flex justify-end h-full">
+            <div className={cn(
+              'w-full max-w-xs h-full bg-card/95 backdrop-saturate-150 shadow-2xl border-l border-white/10 p-6 z-50',
+              mounted ? 'translate-x-0' : 'translate-x-2'
+            )}>
               <nav className="mt-10">
                 <ul className="flex flex-col gap-4">
                   {navItems.map((item, i) => {
-                    const delay = `${i * 70}ms`;
+                    const delay = `${i * 80}ms`;
                     return (
                       <li
                         key={item.path}
-                        data-menu-item
                         style={{ transitionDelay: delay }}
                         className={cn(
-                          'transform transition-all duration-350 ease-out',
-                          'opacity-0 translate-y-4',
+                          'transform transition-all duration-300 ease-out',
+                          mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                         )}
                       >
                         <Link
                           to={item.path}
                           onClick={() => setMenuOpen(false)}
                           className="block text-lg font-medium text-foreground hover:text-primary"
-                          style={{ display: 'inline-block' }}
                         >
                           {item.name}
                         </Link>
@@ -140,32 +150,6 @@ const Header = () => {
             </div>
           </div>
         </div>
-      )}
-
-      {/* Animations for menu items after mount */}
-      <style>
-        {`@keyframes cascadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          .menu-item-anim { animation: cascadeIn 320ms cubic-bezier(.16,.8,.2,1) forwards; }
-          /* Apply stagger using inline style transitionDelay per item */
-        `}
-      </style>
-
-      {/* small script to add the animation class to items after mount */}
-      {menuOpen && (
-        <script dangerouslySetInnerHTML={{ __html: `
-          (function(){
-            requestAnimationFrame(()=>{
-              const list = document.querySelectorAll('[data-menu-item]');
-              list.forEach((el, idx)=>{
-                el.classList.add('menu-item-anim');
-                el.style.animationDelay = (idx * 70)+'ms';
-              });
-            });
-          })();
-        ` }} />
       )}
     </header>
   );
