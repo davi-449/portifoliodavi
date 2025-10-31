@@ -23,11 +23,11 @@ const Contato = () => {
         <div className="absolute inset-0 pointer-events-none rounded-[12px]" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.02), inset 0 -6px 30px rgba(0,0,0,0.45)' }} />
 
         <h2 className="text-3xl md:text-4xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-white/80 mb-3">
-          Entre em Contato
+          Vamos Iniciar seu Projeto
         </h2>
 
         <p className="text-base md:text-lg font-open text-foreground/80 mb-6">
-          O caminho mais rápido para transformar sua ideia em realidade. Me envie uma mensagem e vamos começar a construir algo incrível.
+          O caminho mais rápido para lançar o seu site. Fale conosco e vamos começar.
         </p>
 
         <p className="text-sm text-foreground/60 mb-6">Resposta em até 24 horas</p>

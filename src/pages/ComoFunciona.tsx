@@ -11,10 +11,10 @@ const ComoFunciona = () => {
       {/* Seção 1: Hero */}
       <section className="text-center space-y-8">
         <h1 className="text-4xl md:text-6xl font-bold font-heading text-foreground">
-          Sites Profissionais por Assinatura
+          Como Funciona o Aluguel de Sites
         </h1>
         <p className="text-xl md:text-2xl text-foreground/80 font-open max-w-3xl mx-auto leading-relaxed">
-          Tenha um site de alta performance sem se preocupar com desenvolvimento, hospedagem ou manutenção. Pague apenas uma mensalidade fixa e foque no que realmente importa: <strong>fazer seu negócio crescer</strong>.
+          Nossa missão é entender as dificuldades de pequenos negócios que precisam de presença digital profissional. Não apenas alugamos sites, nós criamos ferramentas que resolvem dores reais do seu negócio.
         </p>
       </section>
 
@@ -90,7 +90,7 @@ const ComoFunciona = () => {
       <section className="relative">
         <div className="mx-auto max-w-5xl text-center space-y-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-10 md:p-14 shadow-2xl">
           <h2 className="text-3xl md:text-5xl font-heading font-bold text-foreground">
-            Pronto para decolar?
+            Pronto para lançar seu site?
           </h2>
           <p className="text-lg md:text-xl text-foreground/80 font-open">
             Escolha seu modelo e comece a capturar leads hoje mesmo. Sem burocracia, sem surpresas.
@@ -100,7 +100,7 @@ const ComoFunciona = () => {
               <Link to="/modelos">Ver Modelos</Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link to="/contato">Falar com Especialista</Link>
+              <Link to="/contato">Entrar em Contato</Link>
             </Button>
           </div>
         </div>
