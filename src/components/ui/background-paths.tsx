@@ -34,7 +34,19 @@ export function FloatingPaths({ position }: { position: number }) {
   );
 }
 
-export function BackgroundPaths({ title = "Background Paths", compactTop = false }: { title?: string; compactTop?: boolean }) {
+export function BackgroundPaths({ 
+  title = "Background Paths", 
+  subtitle,
+  ctaText = "Ver meus Projetos",
+  ctaLink = "/projetos",
+  compactTop = false 
+}: { 
+  title?: string; 
+  subtitle?: string;
+  ctaText?: string;
+  ctaLink?: string;
+  compactTop?: boolean;
+}) {
   const words = title.split(" ");
 
   return (
@@ -48,10 +60,10 @@ export function BackgroundPaths({ title = "Background Paths", compactTop = false
       </div>
 
       <div className="relative z-10 container mx-auto px-4 md:px-6 text-center">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2 }} className="max-w-4xl mx-auto">
-          <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold mb-8 tracking-tighter">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2 }} className="max-w-4xl mx-auto space-y-6">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold mb-8 tracking-tight leading-tight">
             {words.map((word, wordIndex) => (
-              <span key={wordIndex} className="inline-block mr-4 last:mr-0">
+              <span key={wordIndex} className="inline-block mr-3 last:mr-0">
                 {word.split("").map((letter, letterIndex) => (
                   <motion.span
                     key={`${wordIndex}-${letterIndex}`}
@@ -72,14 +84,30 @@ export function BackgroundPaths({ title = "Background Paths", compactTop = false
             ))}
           </h1>
 
-          <div className="inline-block group relative bg-gradient-to-b from-white/10 to-black/10 dark:from-black/10 dark:to-white/10 p-px rounded-2xl backdrop-blur-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+          {subtitle && (
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="text-xl md:text-2xl text-foreground/70 max-w-2xl mx-auto mb-8"
+            >
+              {subtitle}
+            </motion.p>
+          )}
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.8 }}
+            className="inline-block group relative bg-gradient-to-b from-white/10 to-black/10 dark:from-black/10 dark:to-white/10 p-px rounded-2xl backdrop-blur-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+          >
             <Button asChild variant="ghost" className="rounded-[1.15rem] px-8 py-6 text-lg font-semibold backdrop-blur-md bg-black/95 hover:bg-black/100 dark:bg-white/95 dark:hover:bg-white/100 text-white dark:text-black transition-all duration-300 group-hover:-translate-y-0.5 border border-white/10 dark:border-black/10 hover:shadow-md">
-              <Link to="/projetos">
-                <span className="opacity-90 group-hover:opacity-100 transition-opacity">Ver meus Projetos</span>
+              <Link to={ctaLink}>
+                <span className="opacity-90 group-hover:opacity-100 transition-opacity">{ctaText}</span>
                 <span className="ml-3 opacity-70 group-hover:opacity-100 group-hover:translate-x-1.5 transition-all duration-300">→</span>
               </Link>
             </Button>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </div>

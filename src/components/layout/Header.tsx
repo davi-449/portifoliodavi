@@ -17,8 +17,8 @@ const Header = () => {
 
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Projetos', path: '/projetos' },
-    { name: 'Sobre', path: '/sobre' },
+    { name: 'Modelos', path: '/modelos' },
+    { name: 'Como Funciona', path: '/como-funciona' },
     { name: 'Contato', path: '/contato' },
   ];
 
@@ -35,7 +35,7 @@ const Header = () => {
             to="/"
             className="text-xl font-bold font-heading text-foreground hover:text-primary transition-colors flex items-center"
           >
-            <span>Davi Code</span>
+            <span>Impulso Web</span>
             <img
               src="/favicon-dark.png"
               alt="logo"
