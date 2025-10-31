@@ -100,7 +100,7 @@ const ComoFunciona = () => {
               <Link to="/modelos">Ver Modelos</Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link to="/contato">Entrar em Contato</Link>
+              <Link to="/cotacao">Solicitar Cotação</Link>
             </Button>
           </div>
         </div>
