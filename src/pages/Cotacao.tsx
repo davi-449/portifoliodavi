@@ -1,656 +1,529 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
-import { ChevronLeft, ChevronRight, Send } from "lucide-react";
+import { Check } from "lucide-react";
+import { useLocale } from "@/contexts/LocaleContext";
 
-type ServiceType = "site" | "branding" | "googleAds" | "metaAds" | "posts" | "reels";
+type Service = "website" | "branding" | "googleAds" | "metaAds" | "posts" | "reels";
 
-interface QuoteState {
-  selectedServices: ServiceType[];
-  adsMonths: number;
-  postsPerMonth: number;
+interface SelectedServices {
+  website: boolean;
+  branding: boolean;
+  googleAds: boolean;
+  metaAds: boolean;
+  posts: boolean;
+  reels: boolean;
 }
 
 const Cotacao = () => {
+  const { texts, prices, currencySymbol } = useLocale();
+  
   const [currentStep, setCurrentStep] = useState(1);
-  const [quote, setQuote] = useState<QuoteState>({
-    selectedServices: [],
-    adsMonths: 3,
-    postsPerMonth: 1,
+  const [selectedServices, setSelectedServices] = useState<SelectedServices>({
+    website: false,
+    branding: false,
+    googleAds: false,
+    metaAds: false,
+    posts: false,
+    reels: false,
   });
 
-  const services = [
-    { id: "site" as ServiceType, label: "Aluguel de Site (Landing Page)", icon: "🌐" },
-    { id: "branding" as ServiceType, label: "Branding (Identidade Visual)", icon: "🎨" },
-    { id: "googleAds" as ServiceType, label: "Marketing Digital (Google Ads)", icon: "🎯" },
-    { id: "metaAds" as ServiceType, label: "Marketing Digital (Meta Ads)", icon: "📱" },
-    { id: "posts" as ServiceType, label: "Social Media (Posts Avulsos)", icon: "📸" },
-    { id: "reels" as ServiceType, label: "Social Media (Edição de Reels)", icon: "🎬" },
-  ];
+  const [googleAdsMonths, setGoogleAdsMonths] = useState(3);
+  const [metaAdsMonths, setMetaAdsMonths] = useState(3);
+  const [postsPerMonth, setPostsPerMonth] = useState(1);
 
-  const toggleService = (serviceId: ServiceType) => {
-    setQuote(prev => ({
-      ...prev,
-      selectedServices: prev.selectedServices.includes(serviceId)
-        ? prev.selectedServices.filter(s => s !== serviceId)
-        : [...prev.selectedServices, serviceId]
-    }));
+  const hasSelectedServices = Object.values(selectedServices).some(Boolean);
+
+  const toggleService = (service: Service) => {
+    setSelectedServices((prev) => ({ ...prev, [service]: !prev[service] }));
+  };
+
+  const calculateGoogleAdsCost = (months: number) => {
+    if (months <= 3) {
+      return months * prices.googleAdsBase;
+    }
+    return 3 * prices.googleAdsBase + (months - 3) * prices.googleAdsPro;
+  };
+
+  const calculateMetaAdsCost = (months: number) => {
+    if (months <= 3) {
+      return months * prices.metaAdsBase;
+    }
+    return 3 * prices.metaAdsBase + (months - 3) * prices.metaAdsPro;
   };
 
   const calculateMonthlyTotal = () => {
     let total = 0;
-
-    if (quote.selectedServices.includes("site")) total += 150;
-
-    if (quote.selectedServices.includes("googleAds")) {
-      const first3 = Math.min(quote.adsMonths, 3) * 300;
-      const remaining = Math.max(0, quote.adsMonths - 3) * 500;
-      total += (first3 + remaining) / quote.adsMonths;
-    }
-
-    if (quote.selectedServices.includes("metaAds")) {
-      const first3 = Math.min(quote.adsMonths, 3) * 400;
-      const remaining = Math.max(0, quote.adsMonths - 3) * 600;
-      total += (first3 + remaining) / quote.adsMonths;
-    }
-
-    if (quote.selectedServices.includes("posts")) {
-      total += quote.postsPerMonth * 50;
-    }
-
+    if (selectedServices.website) total += prices.site;
+    if (selectedServices.googleAds) total += calculateGoogleAdsCost(googleAdsMonths) / googleAdsMonths;
+    if (selectedServices.metaAds) total += calculateMetaAdsCost(metaAdsMonths) / metaAdsMonths;
+    if (selectedServices.posts) total += postsPerMonth * prices.post;
     return total;
   };
 
   const calculateOneTimeTotal = () => {
-    return quote.selectedServices.includes("branding") ? 300 : 0;
+    let total = 0;
+    if (selectedServices.branding) total += prices.branding;
+    return total;
+  };
+
+  const formatPrice = (value: number) => {
+    return `${currencySymbol} ${value.toFixed(2).replace('.', ',')}`;
+  };
+
+  const replaceTemplate = (template: string, replacements: Record<string, string>) => {
+    return template.replace(/\{(\w+)\}/g, (_, key) => replacements[key] || '');
+  };
+
+  const generateWhatsAppMessage = () => {
+    let message = texts.whatsappMessage;
+
+    const monthlyItems: string[] = [];
+    if (selectedServices.website) {
+      monthlyItems.push(`- ${texts.websiteService}: ${formatPrice(prices.site)}`);
+    }
+    if (selectedServices.googleAds) {
+      const avgCost = calculateGoogleAdsCost(googleAdsMonths) / googleAdsMonths;
+      monthlyItems.push(`- ${replaceTemplate(texts.googleAdsService, { months: googleAdsMonths.toString() })}: ${formatPrice(avgCost)}`);
+    }
+    if (selectedServices.metaAds) {
+      const avgCost = calculateMetaAdsCost(metaAdsMonths) / metaAdsMonths;
+      monthlyItems.push(`- ${replaceTemplate(texts.metaAdsService, { months: metaAdsMonths.toString() })}: ${formatPrice(avgCost)}`);
+    }
+    if (selectedServices.posts) {
+      const postsCost = postsPerMonth * prices.post;
+      monthlyItems.push(`- ${replaceTemplate(texts.postsService, { quantity: postsPerMonth.toString() })}: ${formatPrice(postsCost)}`);
+    }
+
+    if (monthlyItems.length > 0) {
+      message += texts.whatsappMonthly + monthlyItems.join('\n');
+    }
+
+    const oneTimeItems: string[] = [];
+    if (selectedServices.branding) {
+      oneTimeItems.push(`- ${texts.brandingService}: ${formatPrice(prices.branding)}`);
+    }
+
+    if (oneTimeItems.length > 0) {
+      message += texts.whatsappOneTime + oneTimeItems.join('\n');
+    }
+
+    if (selectedServices.reels) {
+      message += texts.whatsappConsult + `- ${texts.reelsService}`;
+    }
+
+    if (monthlyItems.length > 0) {
+      message += texts.whatsappTotal + formatPrice(calculateMonthlyTotal());
+    }
+
+    return encodeURIComponent(message);
   };
 
   const handleSendWhatsApp = () => {
-    const numeroWA = "5511996242812";
-
-    let mensagem = "*Olá, Impulso Web!*%0A%0A";
-    mensagem += "Gostaria de uma cotação para os seguintes serviços:%0A%0A";
-
-    const monthlyTotal = calculateMonthlyTotal();
-    const oneTimeTotal = calculateOneTimeTotal();
-
-    if (monthlyTotal > 0) {
-      mensagem += "*--- PAGAMENTOS MENSAIS ---*%0A";
-
-      if (quote.selectedServices.includes("site")) {
-        mensagem += `• Aluguel de Site: R$ 150,00/mês%0A`;
-      }
-
-      if (quote.selectedServices.includes("googleAds")) {
-        const googleValue = ((Math.min(quote.adsMonths, 3) * 300 + Math.max(0, quote.adsMonths - 3) * 500) / quote.adsMonths).toFixed(2);
-        mensagem += `• Google Ads (${quote.adsMonths} meses): R$ ${googleValue}/mês%0A`;
-      }
-
-      if (quote.selectedServices.includes("metaAds")) {
-        const metaValue = ((Math.min(quote.adsMonths, 3) * 400 + Math.max(0, quote.adsMonths - 3) * 600) / quote.adsMonths).toFixed(2);
-        mensagem += `• Meta Ads (${quote.adsMonths} meses): R$ ${metaValue}/mês%0A`;
-      }
-
-      if (quote.selectedServices.includes("posts")) {
-        mensagem += `• Posts (${quote.postsPerMonth} unidades/mês): R$ ${(quote.postsPerMonth * 50).toFixed(2)}/mês%0A`;
-      }
-
-      mensagem += `%0A*Total Mensal (Estimado): R$ ${monthlyTotal.toFixed(2)}*%0A`;
-    }
-
-    if (oneTimeTotal > 0) {
-      mensagem += "%0A*--- PAGAMENTOS ÚNICOS ---*%0A";
-      mensagem += `• Branding Completo: R$ ${oneTimeTotal.toFixed(2)}%0A`;
-    }
-
-    if (quote.selectedServices.includes("reels")) {
-      mensagem += "%0A*--- SERVIÇOS A CONSULTAR ---*%0A";
-      mensagem += "• Edição de Reels%0A";
-    }
-
-    const link = `https://wa.me/${numeroWA}?text=${mensagem}`;
-    window.open(link, '_blank');
-  };
-
-  const canProceed = () => {
-    if (currentStep === 1) return quote.selectedServices.length > 0;
-    return true;
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0, x: 100 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut"
-      }
-    },
-    exit: {
-      opacity: 0,
-      x: -100,
-      transition: {
-        duration: 0.3,
-        ease: "easeIn"
-      }
-    }
-  };
-
-  const staggerContainerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, height: 0 },
-    visible: {
-      opacity: 1,
-      height: "auto",
-      transition: {
-        duration: 0.3,
-        ease: "easeOut"
-      }
-    },
-    exit: {
-      opacity: 0,
-      height: 0,
-      transition: {
-        duration: 0.2,
-        ease: "easeIn"
-      }
-    }
-  };
-
-  const AnimatedCounter = ({ value }: { value: number }) => {
-    const motionValue = useMotionValue(0);
-    const rounded = useTransform(motionValue, (latest) => Math.round(latest * 100) / 100);
-    const [displayValue, setDisplayValue] = useState(0);
-
-    useEffect(() => {
-      const controls = animate(motionValue, value, {
-        duration: 0.4,
-        ease: "easeOut"
-      });
-
-      const unsubscribe = rounded.on("change", (latest) => {
-        setDisplayValue(latest);
-      });
-
-      return () => {
-        controls.stop();
-        unsubscribe();
-      };
-    }, [value, motionValue, rounded]);
-
-    return <>{displayValue.toFixed(2)}</>;
-  };
-
-  const renderStep = () => {
-    switch (currentStep) {
-      case 1:
-        return (
-          <motion.div
-            key="step-1"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="space-y-6"
-          >
-            <div className="text-center space-y-4">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">
-                Quais serviços você precisa?
-              </h2>
-              <p className="text-foreground/70 text-lg">
-                Selecione todos os serviços que deseja contratar
-              </p>
-            </div>
-
-            <motion.div
-              variants={staggerContainerVariants}
-              initial="hidden"
-              animate="visible"
-              className="grid gap-4 max-w-2xl mx-auto mt-8"
-            >
-              {services.map(service => (
-                <motion.label
-                  key={service.id}
-                  variants={itemVariants}
-                  className="flex items-center gap-4 p-5 rounded-lg border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all cursor-pointer group"
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                >
-                  <motion.div
-                    initial={false}
-                    animate={quote.selectedServices.includes(service.id) ? { scale: [0.8, 1] } : { scale: 1 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  >
-                    <Checkbox
-                      checked={quote.selectedServices.includes(service.id)}
-                      onCheckedChange={() => toggleService(service.id)}
-                      className="h-5 w-5"
-                    />
-                  </motion.div>
-                  <span className="text-2xl">{service.icon}</span>
-                  <span className="text-lg font-medium text-foreground group-hover:text-primary transition-colors">
-                    {service.label}
-                  </span>
-                </motion.label>
-              ))}
-            </motion.div>
-          </motion.div>
-        );
-
-      case 2:
-        return (
-          <motion.div
-            key="step-2"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="space-y-8 max-w-2xl mx-auto"
-          >
-            <div className="text-center space-y-4">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">
-                Configure seus Serviços
-              </h2>
-              <p className="text-foreground/70 text-lg">
-                Ajuste os detalhes conforme suas necessidades
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              <AnimatePresence mode="wait">
-                {quote.selectedServices.includes("site") && (
-                  <motion.div
-                    key="site-card"
-                    variants={cardVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="p-6 rounded-lg border border-white/10 bg-white/5 backdrop-blur-sm space-y-2 overflow-hidden"
-                  >
-                    <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
-                      🌐 Aluguel de Site
-                    </h3>
-                    <p className="text-foreground/80">
-                      Nosso plano de aluguel de site é de <strong>R$ 150/mês</strong>.
-                    </p>
-                    <p className="text-sm text-foreground/60">
-                      (Contrato mínimo de 12 meses)
-                    </p>
-                  </motion.div>
-                )}
-
-                {quote.selectedServices.includes("branding") && (
-                  <motion.div
-                    key="branding-card"
-                    variants={cardVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="p-6 rounded-lg border border-white/10 bg-white/5 backdrop-blur-sm space-y-2 overflow-hidden"
-                  >
-                    <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
-                      🎨 Branding
-                    </h3>
-                    <p className="text-foreground/80">
-                      Nosso pacote de Branding completo (Logo, Identidade Visual, etc.) é um pagamento único de <strong>R$ 300</strong>.
-                    </p>
-                  </motion.div>
-                )}
-
-                {(quote.selectedServices.includes("googleAds") || quote.selectedServices.includes("metaAds")) && (
-                  <motion.div
-                    key="ads-card"
-                    variants={cardVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="p-6 rounded-lg border border-white/10 bg-white/5 backdrop-blur-sm space-y-4 overflow-hidden"
-                  >
-                    <h3 className="text-xl font-semibold text-foreground">
-                      📊 Marketing Digital
-                    </h3>
-                    <div className="space-y-4">
-                      <label className="space-y-2">
-                        <p className="text-foreground/80">
-                          Por quantos meses você planeja manter o serviço?
-                        </p>
-                        <div className="flex items-center gap-4">
-                          <Slider
-                            value={[quote.adsMonths]}
-                            onValueChange={([value]) => setQuote(prev => ({ ...prev, adsMonths: value }))}
-                            min={3}
-                            max={12}
-                            step={1}
-                            className="flex-1"
-                          />
-                          <motion.span
-                            key={quote.adsMonths}
-                            initial={{ scale: 1.2 }}
-                            animate={{ scale: 1 }}
-                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                            className="text-2xl font-bold text-primary min-w-[60px] text-center"
-                          >
-                            {quote.adsMonths}
-                          </motion.span>
-                        </div>
-                      </label>
-
-                      {quote.selectedServices.includes("googleAds") && (
-                        <div className="text-sm text-foreground/70 pl-2 border-l-2 border-primary/50">
-                          <strong>Google Ads:</strong> R$ 300/mês (3 primeiros meses), R$ 500/mês (após 3º mês)
-                        </div>
-                      )}
-                      {quote.selectedServices.includes("metaAds") && (
-                        <div className="text-sm text-foreground/70 pl-2 border-l-2 border-primary/50">
-                          <strong>Meta Ads:</strong> R$ 400/mês (3 primeiros meses), R$ 600/mês (após 3º mês)
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-
-                {quote.selectedServices.includes("posts") && (
-                  <motion.div
-                    key="posts-card"
-                    variants={cardVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="p-6 rounded-lg border border-white/10 bg-white/5 backdrop-blur-sm space-y-4 overflow-hidden"
-                  >
-                    <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
-                      📸 Posts
-                    </h3>
-                    <div className="space-y-2">
-                      <label className="space-y-2">
-                        <p className="text-foreground/80">
-                          Quantos posts (Carrossel/Imagem) você precisa por mês?
-                        </p>
-                        <div className="flex items-center gap-4">
-                          <Slider
-                            value={[quote.postsPerMonth]}
-                            onValueChange={([value]) => setQuote(prev => ({ ...prev, postsPerMonth: value }))}
-                            min={1}
-                            max={30}
-                            step={1}
-                            className="flex-1"
-                          />
-                          <motion.span
-                            key={quote.postsPerMonth}
-                            initial={{ scale: 1.2 }}
-                            animate={{ scale: 1 }}
-                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                            className="text-2xl font-bold text-primary min-w-[60px] text-center"
-                          >
-                            {quote.postsPerMonth}
-                          </motion.span>
-                        </div>
-                      </label>
-                      <div className="text-sm text-foreground/70 pl-2 border-l-2 border-primary/50">
-                        Valor: R$ {(quote.postsPerMonth * 50).toFixed(2)}/mês
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {quote.selectedServices.includes("reels") && (
-                  <motion.div
-                    key="reels-card"
-                    variants={cardVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="p-6 rounded-lg border border-white/10 bg-white/5 backdrop-blur-sm space-y-2 overflow-hidden"
-                  >
-                    <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
-                      🎬 Edição de Reels
-                    </h3>
-                    <p className="text-foreground/80">
-                      A edição de Reels é um serviço complexo. O valor será enviado <strong>sob consulta</strong> após análise do material.
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
-        );
-
-      case 3:
-        const monthlyTotal = calculateMonthlyTotal();
-        const oneTimeTotal = calculateOneTimeTotal();
-
-        return (
-          <motion.div
-            key="step-3"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="space-y-8 max-w-3xl mx-auto"
-          >
-            <div className="text-center space-y-4">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">
-                Revise sua Cotação
-              </h2>
-              <p className="text-foreground/70 text-lg">
-                Confira o resumo dos serviços selecionados
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              <AnimatePresence mode="wait">
-                {monthlyTotal > 0 && (
-                  <motion.div
-                    key="monthly-summary"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="p-8 rounded-xl border border-primary/30 bg-primary/5 backdrop-blur-sm space-y-4"
-                  >
-                    <h3 className="text-2xl font-semibold text-foreground border-b border-white/10 pb-3">
-                      💰 Pagamentos Mensais
-                    </h3>
-                    <div className="space-y-3">
-                      {quote.selectedServices.includes("site") && (
-                        <div className="flex justify-between items-center">
-                          <span className="text-foreground/80">Aluguel de Site</span>
-                          <span className="font-semibold text-foreground">R$ 150,00</span>
-                        </div>
-                      )}
-                      {quote.selectedServices.includes("googleAds") && (
-                        <div className="flex justify-between items-center">
-                          <span className="text-foreground/80">Google Ads ({quote.adsMonths} meses)</span>
-                          <span className="font-semibold text-foreground">
-                            R$ {((Math.min(quote.adsMonths, 3) * 300 + Math.max(0, quote.adsMonths - 3) * 500) / quote.adsMonths).toFixed(2)}
-                          </span>
-                        </div>
-                      )}
-                      {quote.selectedServices.includes("metaAds") && (
-                        <div className="flex justify-between items-center">
-                          <span className="text-foreground/80">Meta Ads ({quote.adsMonths} meses)</span>
-                          <span className="font-semibold text-foreground">
-                            R$ {((Math.min(quote.adsMonths, 3) * 400 + Math.max(0, quote.adsMonths - 3) * 600) / quote.adsMonths).toFixed(2)}
-                          </span>
-                        </div>
-                      )}
-                      {quote.selectedServices.includes("posts") && (
-                        <div className="flex justify-between items-center">
-                          <span className="text-foreground/80">Posts ({quote.postsPerMonth} unidades)</span>
-                          <span className="font-semibold text-foreground">R$ {(quote.postsPerMonth * 50).toFixed(2)}</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="border-t border-white/20 pt-3 flex justify-between items-center">
-                      <span className="text-xl font-bold text-foreground">Total Mensal (Estimado)</span>
-                      <span className="text-2xl font-bold text-primary">
-                        R$ <AnimatedCounter value={monthlyTotal} />
-                      </span>
-                    </div>
-                  </motion.div>
-                )}
-
-                {oneTimeTotal > 0 && (
-                  <motion.div
-                    key="onetime-summary"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: 0.1 }}
-                    className="p-8 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm space-y-4"
-                  >
-                    <h3 className="text-2xl font-semibold text-foreground border-b border-white/10 pb-3">
-                      🎨 Pagamentos Únicos
-                    </h3>
-                    <div className="flex justify-between items-center">
-                      <span className="text-foreground/80">Branding Completo</span>
-                      <span className="text-xl font-bold text-foreground">R$ {oneTimeTotal.toFixed(2)}</span>
-                    </div>
-                  </motion.div>
-                )}
-
-                {quote.selectedServices.includes("reels") && (
-                  <motion.div
-                    key="consult-summary"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: 0.2 }}
-                    className="p-8 rounded-xl border border-warning/30 bg-warning/5 backdrop-blur-sm space-y-4"
-                  >
-                    <h3 className="text-2xl font-semibold text-foreground border-b border-white/10 pb-3">
-                      📋 Serviços a Consultar
-                    </h3>
-                    <div className="text-foreground/80">
-                      • Edição de Reels
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3, delay: 0.3 }}
-              className="text-center pt-6"
-            >
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button
-                  size="lg"
-                  className="text-lg px-8 py-6 gap-3"
-                  onClick={handleSendWhatsApp}
-                >
-                  <Send className="h-5 w-5" />
-                  Receber Cotação no WhatsApp
-                </Button>
-              </motion.div>
-              <p className="text-sm text-foreground/60 mt-4">
-                Clique para enviar sua cotação e receber um atendimento personalizado
-              </p>
-            </motion.div>
-          </motion.div>
-        );
-
-      default:
-        return null;
-    }
+    const message = generateWhatsAppMessage();
+    const whatsappUrl = `https://wa.me/5511996242812?text=${message}`;
+    window.open(whatsappUrl, "_blank");
   };
 
   return (
-    <div className="min-h-screen bg-background py-12 px-4">
-      <div className="max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="mb-12"
-        >
-          <div className="flex justify-center gap-2 mb-4">
-            {[1, 2, 3].map(step => (
-              <motion.div
+    <div className="min-h-screen bg-background pt-20 pb-12 px-4">
+      <div className="max-w-2xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+            {texts.pageTitle}
+          </h1>
+          <div className="flex justify-center gap-2 mt-6">
+            {[1, 2, 3].map((step) => (
+              <div
                 key={step}
-                initial={false}
-                animate={{
-                  width: step === currentStep ? 48 : 32,
-                  backgroundColor: step === currentStep
-                    ? 'hsl(var(--primary))'
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  step === currentStep
+                    ? "w-12 bg-primary"
                     : step < currentStep
-                    ? 'hsl(var(--primary) / 0.5)'
-                    : 'hsl(var(--foreground) / 0.1)'
-                }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-                className="h-2 rounded-full"
+                    ? "w-8 bg-primary/60"
+                    : "w-8 bg-muted"
+                }`}
               />
             ))}
           </div>
-          <p className="text-center text-sm text-foreground/60">
-            Passo {currentStep} de 3
-          </p>
-        </motion.div>
-
-        <div className="mb-12 overflow-hidden">
-          <AnimatePresence mode="wait">
-            {renderStep()}
-          </AnimatePresence>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="flex justify-between gap-4 max-w-2xl mx-auto"
-        >
-          <Button
-            variant="outline"
-            size="lg"
-            onClick={() => setCurrentStep(prev => Math.max(1, prev - 1))}
-            disabled={currentStep === 1}
-            className="gap-2"
-          >
-            <ChevronLeft className="h-5 w-5" />
-            Anterior
-          </Button>
-
-          {currentStep < 3 ? (
-            <Button
-              size="lg"
-              onClick={() => setCurrentStep(prev => prev + 1)}
-              disabled={!canProceed()}
-              className="gap-2"
+        {/* Steps */}
+        <AnimatePresence mode="wait">
+          {currentStep === 1 && (
+            <motion.div
+              key="step1"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-6"
             >
-              Próximo
-              <ChevronRight className="h-5 w-5" />
-            </Button>
-          ) : (
-            <div className="flex-1" />
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold mb-2">{texts.step1Title}</h2>
+                <p className="text-muted-foreground">{texts.step1Subtitle}</p>
+              </div>
+
+              <div className="space-y-4">
+                {[
+                  { id: "website" as Service, label: texts.serviceWebsite },
+                  { id: "branding" as Service, label: texts.serviceBranding },
+                  { id: "googleAds" as Service, label: texts.serviceGoogleAds },
+                  { id: "metaAds" as Service, label: texts.serviceMetaAds },
+                  { id: "posts" as Service, label: texts.servicePosts },
+                  { id: "reels" as Service, label: texts.serviceReels },
+                ].map((service) => (
+                  <motion.div
+                    key={service.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <label
+                      className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                        selectedServices[service.id]
+                          ? "border-primary bg-primary/5"
+                          : "border-border hover:border-primary/50"
+                      }`}
+                    >
+                      <Checkbox
+                        checked={selectedServices[service.id]}
+                        onCheckedChange={() => toggleService(service.id)}
+                      />
+                      <span className="flex-1 font-medium">{service.label}</span>
+                      {selectedServices[service.id] && (
+                        <Check className="w-5 h-5 text-primary" />
+                      )}
+                    </label>
+                  </motion.div>
+                ))}
+              </div>
+
+              <Button
+                onClick={() => setCurrentStep(2)}
+                disabled={!hasSelectedServices}
+                className="w-full"
+                size="lg"
+              >
+                {texts.buttonNext}
+              </Button>
+            </motion.div>
           )}
-        </motion.div>
+
+          {currentStep === 2 && (
+            <motion.div
+              key="step2"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-6"
+            >
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold mb-2">{texts.step2Title}</h2>
+                <p className="text-muted-foreground">{texts.step2Subtitle}</p>
+              </div>
+
+              <div className="space-y-6">
+                {selectedServices.website && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="p-6 rounded-lg border bg-card"
+                  >
+                    <h3 className="font-semibold mb-2">{texts.serviceWebsite}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {replaceTemplate(texts.websiteInfo, { price: formatPrice(prices.site) })}
+                    </p>
+                  </motion.div>
+                )}
+
+                {selectedServices.branding && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="p-6 rounded-lg border bg-card"
+                  >
+                    <h3 className="font-semibold mb-2">{texts.serviceBranding}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {replaceTemplate(texts.brandingInfo, { price: formatPrice(prices.branding) })}
+                    </p>
+                  </motion.div>
+                )}
+
+                {selectedServices.googleAds && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="p-6 rounded-lg border bg-card"
+                  >
+                    <h3 className="font-semibold mb-3">{texts.serviceGoogleAds}</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">
+                          {texts.adsMonthsLabel}
+                        </label>
+                        <Slider
+                          value={[googleAdsMonths]}
+                          onValueChange={([value]) => setGoogleAdsMonths(value)}
+                          min={3}
+                          max={12}
+                          step={1}
+                          className="mb-2"
+                        />
+                        <div className="flex justify-between text-sm text-muted-foreground">
+                          <span>3 {texts.adsMonthsMin}</span>
+                          <span className="font-semibold text-foreground">
+                            {googleAdsMonths} {googleAdsMonths === 1 ? "mês" : "meses"}
+                          </span>
+                          <span>12 max</span>
+                        </div>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {replaceTemplate(texts.googleAdsPricing, {
+                          priceBase: formatPrice(prices.googleAdsBase),
+                          pricePro: formatPrice(prices.googleAdsPro),
+                        })}
+                      </p>
+                      <p className="text-sm font-semibold">
+                        {texts.monthlyTotal}: {formatPrice(calculateGoogleAdsCost(googleAdsMonths) / googleAdsMonths)}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+
+                {selectedServices.metaAds && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="p-6 rounded-lg border bg-card"
+                  >
+                    <h3 className="font-semibold mb-3">{texts.serviceMetaAds}</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">
+                          {texts.adsMonthsLabel}
+                        </label>
+                        <Slider
+                          value={[metaAdsMonths]}
+                          onValueChange={([value]) => setMetaAdsMonths(value)}
+                          min={3}
+                          max={12}
+                          step={1}
+                          className="mb-2"
+                        />
+                        <div className="flex justify-between text-sm text-muted-foreground">
+                          <span>3 {texts.adsMonthsMin}</span>
+                          <span className="font-semibold text-foreground">
+                            {metaAdsMonths} {metaAdsMonths === 1 ? "mês" : "meses"}
+                          </span>
+                          <span>12 max</span>
+                        </div>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {replaceTemplate(texts.metaAdsPricing, {
+                          priceBase: formatPrice(prices.metaAdsBase),
+                          pricePro: formatPrice(prices.metaAdsPro),
+                        })}
+                      </p>
+                      <p className="text-sm font-semibold">
+                        {texts.monthlyTotal}: {formatPrice(calculateMetaAdsCost(metaAdsMonths) / metaAdsMonths)}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+
+                {selectedServices.posts && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="p-6 rounded-lg border bg-card"
+                  >
+                    <h3 className="font-semibold mb-3">{texts.servicePosts}</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">
+                          {texts.postsLabel}
+                        </label>
+                        <Slider
+                          value={[postsPerMonth]}
+                          onValueChange={([value]) => setPostsPerMonth(value)}
+                          min={1}
+                          max={30}
+                          step={1}
+                          className="mb-2"
+                        />
+                        <div className="flex justify-between text-sm text-muted-foreground">
+                          <span>1 min</span>
+                          <span className="font-semibold text-foreground">
+                            {postsPerMonth} {postsPerMonth === 1 ? "post" : "posts"}
+                          </span>
+                          <span>30 max</span>
+                        </div>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {replaceTemplate(texts.postsPricing, { price: formatPrice(prices.post) })}
+                      </p>
+                      <p className="text-sm font-semibold">
+                        {texts.monthlyTotal}: {formatPrice(postsPerMonth * prices.post)}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+
+                {selectedServices.reels && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="p-6 rounded-lg border bg-card"
+                  >
+                    <h3 className="font-semibold mb-2">{texts.serviceReels}</h3>
+                    <p className="text-sm text-muted-foreground">{texts.reelsInfo}</p>
+                  </motion.div>
+                )}
+              </div>
+
+              <div className="flex gap-4">
+                <Button
+                  onClick={() => setCurrentStep(1)}
+                  variant="outline"
+                  className="flex-1"
+                  size="lg"
+                >
+                  {texts.buttonBack}
+                </Button>
+                <Button onClick={() => setCurrentStep(3)} className="flex-1" size="lg">
+                  {texts.buttonNext}
+                </Button>
+              </div>
+            </motion.div>
+          )}
+
+          {currentStep === 3 && (
+            <motion.div
+              key="step3"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-6"
+            >
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold mb-2">{texts.step3Title}</h2>
+                <p className="text-muted-foreground">{texts.step3Subtitle}</p>
+              </div>
+
+              <div className="space-y-6">
+                {/* Pagamentos Mensais */}
+                {(selectedServices.website ||
+                  selectedServices.googleAds ||
+                  selectedServices.metaAds ||
+                  selectedServices.posts) && (
+                  <div className="p-6 rounded-lg border bg-card">
+                    <h3 className="text-lg font-semibold mb-4 text-primary">
+                      {texts.monthlyPayments}
+                    </h3>
+                    <div className="space-y-3">
+                      {selectedServices.website && (
+                        <div className="flex justify-between items-center">
+                          <span className="text-muted-foreground">{texts.websiteService}</span>
+                          <span className="font-semibold">{formatPrice(prices.site)}</span>
+                        </div>
+                      )}
+                      {selectedServices.googleAds && (
+                        <div className="flex justify-between items-center">
+                          <span className="text-muted-foreground">
+                            {replaceTemplate(texts.googleAdsService, { months: googleAdsMonths.toString() })}
+                          </span>
+                          <span className="font-semibold">
+                            {formatPrice(calculateGoogleAdsCost(googleAdsMonths) / googleAdsMonths)}
+                          </span>
+                        </div>
+                      )}
+                      {selectedServices.metaAds && (
+                        <div className="flex justify-between items-center">
+                          <span className="text-muted-foreground">
+                            {replaceTemplate(texts.metaAdsService, { months: metaAdsMonths.toString() })}
+                          </span>
+                          <span className="font-semibold">
+                            {formatPrice(calculateMetaAdsCost(metaAdsMonths) / metaAdsMonths)}
+                          </span>
+                        </div>
+                      )}
+                      {selectedServices.posts && (
+                        <div className="flex justify-between items-center">
+                          <span className="text-muted-foreground">
+                            {replaceTemplate(texts.postsService, { quantity: postsPerMonth.toString() })}
+                          </span>
+                          <span className="font-semibold">
+                            {formatPrice(postsPerMonth * prices.post)}
+                          </span>
+                        </div>
+                      )}
+                      <div className="pt-3 border-t flex justify-between items-center">
+                        <span className="font-semibold">{texts.monthlyTotal}</span>
+                        <span className="text-xl font-bold text-primary">
+                          {formatPrice(calculateMonthlyTotal())}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Pagamentos Únicos */}
+                {selectedServices.branding && (
+                  <div className="p-6 rounded-lg border bg-card">
+                    <h3 className="text-lg font-semibold mb-4 text-primary">
+                      {texts.oneTimePayments}
+                    </h3>
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground">{texts.brandingService}</span>
+                      <span className="font-semibold">{formatPrice(prices.branding)}</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Serviços a Consultar */}
+                {selectedServices.reels && (
+                  <div className="p-6 rounded-lg border bg-card">
+                    <h3 className="text-lg font-semibold mb-4 text-primary">
+                      {texts.consultServices}
+                    </h3>
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground">{texts.reelsService}</span>
+                      <span className="font-semibold text-muted-foreground">
+                        A consultar
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex gap-4">
+                <Button
+                  onClick={() => setCurrentStep(2)}
+                  variant="outline"
+                  className="flex-1"
+                  size="lg"
+                >
+                  {texts.buttonBack}
+                </Button>
+                <Button onClick={handleSendWhatsApp} className="flex-1" size="lg">
+                  {texts.buttonSendWhatsApp}
+                </Button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
