@@ -44,7 +44,7 @@ const Modelos = () => {
             </p>
             
             <Button asChild size="lg" className="group">
-              <Link to="/cotacao" className="inline-flex items-center gap-2">
+              <Link to="/como-funciona" className="inline-flex items-center gap-2">
                 Solicitar Solução Sob Medida
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
